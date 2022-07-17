@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-export function CourseList({ courses, authors }) {
+export function CourseList({ courses }) {
   return (
     <table className="table">
       <thead>
@@ -28,9 +28,7 @@ export function CourseList({ courses, authors }) {
               <td>
                 <Link to={"/course/" + course.slug}>{course.title}</Link>
               </td>
-              <td>
-                {authors.find((author) => author.id === course.authorId).name}
-              </td>
+              <td>{course.authorName}</td>
               <td>{course.category}</td>
             </tr>
           );
@@ -42,5 +40,4 @@ export function CourseList({ courses, authors }) {
 
 CourseList.propTypes = {
   courses: PropTypes.array.isRequired,
-  authors: PropTypes.array.isRequired,
 };

@@ -9,7 +9,6 @@ export function loadAuthors() {
     return authorApi
       .getAuthors()
       .then((authors) => {
-        console.log("==============", authors);
         dispatch(loadAuthorsSucces(authors));
       })
       .catch((error) => {

@@ -13,12 +13,13 @@ function CoursesPage(props) {
     },
   });
 
+  const { actions, courses } = props;
   useEffect(() => {
-    props.actions.loadCourses().catch((error) => {
-      alert("Loading courses failed" + error);
-    });
-    props.actions.loadAuthors().catch((error) => {
+    actions.loadAuthors().catch((error) => {
       alert("Loading authors failed" + error);
+    });
+    actions.loadCourses().catch((error) => {
+      alert("Loading courses failed" + error);
     });
   }, []);
 
@@ -29,26 +30,36 @@ function CoursesPage(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.actions.createCourse(state.course);
+    actions.createCourse(state.course);
   };
 
   return (
     <>
       <h2>Courses</h2>
-      <CourseList courses={props.courses} authors={props.authors} />
+      <CourseList courses={courses} />
     </>
   );
 }
 
 CoursesPage.propTypes = {
-  courses: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
+  courses: PropTypes.array.isRequired,
   authors: PropTypes.array.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    courses: state.courses,
+    courses: state.authors.length
+      ? state.courses.map((course) => {
+          return {
+            ...course,
+            authorName: state.authors.find(
+              (author) => author.id === course.authorId
+            ).name,
+          };
+        })
+      : [],
+    authors: state.authors,
   };
 }
 
